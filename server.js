@@ -129,7 +129,7 @@ app.get("/dashboard", (req, res) => {
 
 
 // Saved Events
-app.get("/events/saved", requireAdmin, (req, res) => {
+app.get("/events/saved", (req, res) => {
   try {
     let query = `SELECT @seq := @seq + 1 AS seq_no, e.*  
              FROM (SELECT * FROM events WHERE status = 'upcoming') AS e,  
@@ -150,7 +150,7 @@ app.get("/events/saved", requireAdmin, (req, res) => {
 
 
 // Past Events
-app.get("/events/past", requireAdmin, (req, res) => {
+app.get("/events/past", (req, res) => {
   try {
     let query = `SELECT @seq := @seq + 1 AS seq_no, e.*  
              FROM (SELECT * FROM events WHERE status = 'past') AS e,  
@@ -167,6 +167,12 @@ app.get("/events/past", requireAdmin, (req, res) => {
   } catch (error) {
     res.send(`Error: ${error}`);
   }
+});
+
+
+// Route to Event Form
+app.get("/events/new", (req, res) => {
+  res.render("new_event");
 });
 
 
