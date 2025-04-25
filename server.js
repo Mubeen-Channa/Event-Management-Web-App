@@ -176,6 +176,24 @@ app.get("/events/new", (req, res) => {
 });
 
 
+
+// Event Form Handling 
+app.post("/events/create", (req, res) => {
+  const { eventTitle, eventDate, openingTime, closingTime, websiteUrl, facebookUrl } = req.body;
+
+  const query = `INSERT INTO events (title, event_date, opening_time, closing_time, website_url, facebook_url) 
+               VALUES ('${eventTitle}', '${eventDate}', '${openingTime}', '${closingTime}', '${websiteUrl}', '${facebookUrl}')`;
+
+  connection.query(query, (err, result) => {
+    if (err) {
+      console.error("Error inserting event: " + err.message);
+      return res.status(500).send("Database Error");
+    }
+    res.send('<script>alert("Event Added Successfully"); window.location.href="/events/new";</script>');
+  });
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
