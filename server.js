@@ -198,6 +198,21 @@ app.post("/events/create", (req, res) => {
 app.get("/settings", requireAdmin, (req, res) => res.render("settings"));
 
 
+// Edit Event
+app.get("/events/:id/edit", (req, res) => {
+  let query = `SELECT * FROM events WHERE id = ?`;
+  connection.query(query, [req.params.id], (err, results) => {
+    if (err) {
+      return res.status(500).send("Database Error: " + err);
+    }
+    if (results.length === 0) {
+      return res.status(404).send("Event not found");
+    }
+    res.render("edit_event", { event: results[0] }); 
+  });
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
