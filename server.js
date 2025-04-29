@@ -10,6 +10,19 @@ const app = express();
 const port = 3000;
 
 
+// middleware to parse incoming form data.
+app.use(express.urlencoded({ extended: true }));
+
+// Method Override Middleware
+app.use(methodOverride("_method"));
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, "public")));
+
+// Parse form data
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
 // Home Route
 app.get("/", (req, res) => {
   res.send("Welcome To Event Management Application");
