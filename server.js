@@ -23,6 +23,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+// Set up the view engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "/views"));
+
+
 // Home Route
 app.get("/", (req, res) => {
   res.send("Welcome To Event Management Application");
