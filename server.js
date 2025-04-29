@@ -194,6 +194,10 @@ app.post("/events/create", (req, res) => {
 });
 
 
+// Events Setting Route
+app.get("/settings", requireAdmin, (req, res) => res.render("settings"));
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
