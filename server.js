@@ -28,6 +28,15 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
 
+// MySql Connection
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "mysql123",
+  database: "events_db",
+});
+
+
 // Home Route
 app.get("/", (req, res) => {
   res.send("Welcome To Event Management Application");
