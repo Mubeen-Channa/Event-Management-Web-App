@@ -39,8 +39,9 @@ const connection = mysql.createConnection({
 
 // Home Route
 app.get("/", (req, res) => {
-  res.send("Welcome To Event Management Application");
+  res.redirect("/events");
 });
+
 
 // Server
 app.listen(port, () => {
