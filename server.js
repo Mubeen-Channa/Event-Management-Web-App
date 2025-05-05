@@ -43,6 +43,20 @@ app.get("/", (req, res) => {
 });
 
 
+// Eventa show only user Route
+app.get("/events", (req, res) => {
+  let query = `SELECT * FROM events WHERE status = 'upcoming';`
+ 
+  connection.query(query, (err, events) => {
+    if (err) {
+      console.error("Error fetching events: " + err.message);
+      return res.status(500).send("Database Error");
+    }
+    res.render("public_events", { events });
+  });
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
