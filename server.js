@@ -57,6 +57,20 @@ app.get("/events", (req, res) => {
 });
 
 
+// Past Events (Happened)
+app.get("/past-events", (req, res) => {
+  let query = `SELECT * FROM events WHERE status = 'past';`
+
+  connection.query(query, (err, events) => {
+    if (err) {
+      console.error("Error fetching past events: " + err.message);
+      return res.status(500).send("Database Error");
+    }
+    res.render("public_past_events", { events });
+  });
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
