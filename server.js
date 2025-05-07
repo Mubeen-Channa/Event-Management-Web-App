@@ -71,6 +71,12 @@ app.get("/past-events", (req, res) => {
 });
 
 
+// New Event Alert
+app.get("/scottish-event", (req, res) => {
+  res.render("Scottish_weekend"); 
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
