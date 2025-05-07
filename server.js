@@ -43,6 +43,28 @@ app.get("/admin", (req, res) => {
 })
 
 
+// Login
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  
+  const query = "SELECT * FROM admins WHERE username = ? AND password = ?";
+  connection.query(query, [username, password], (err, results) => {
+      if (err) {
+          console.error("Database error:", err);
+          res.send("Error logging in");
+          return;
+      }
+
+      if (results.length > 0) {
+          req.session.role = "admin"; 
+          res.redirect("/dashboard");
+      } else {
+          res.send('<script>alert("Invalid Credentials"); window.location.href="/admin";</script>');
+      }
+  });
+});
+
+
 // Home Route
 app.get("/", (req, res) => {
   res.redirect("/events");
