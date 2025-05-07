@@ -37,6 +37,12 @@ const connection = mysql.createConnection({
 });
 
 
+// Admin Route
+app.get("/admin", (req, res) => {
+  res.render("login");
+})
+
+
 // Home Route
 app.get("/", (req, res) => {
   res.redirect("/events");
