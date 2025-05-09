@@ -41,6 +41,65 @@
       </div>
     </div>
   
+    <script>
+      function startCountdown(eventId, eventDate, eventTime) {
+        const countdownElement = document.getElementById(
+          "countdown-" + eventId
+        );
+        const daysElement = document.getElementById("days-" + eventId);
+        const hoursElement = document.getElementById("hours-" + eventId);
+        const minutesElement = document.getElementById("minutes-" + eventId);
+        const secondsElement = document.getElementById("seconds-" + eventId);
+        const endedElement = document.getElementById("event-ended-" + eventId);
+        const eventCard = document.getElementById("event-card-" + eventId);
+        const pastEventsContainer = document.getElementById("past-events"); // Section for past events
+
+        // Convert "DD/MM/YYYY HH:MM:SS" to "YYYY-MM-DDTHH:MM:SS"
+        let parts = eventDate.split("/");
+        let formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}T${eventTime}`;
+
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const eventTimeMs = new Date(formattedDate).getTime();
+          const timeRemaining = eventTimeMs - now;
+
+          if (timeRemaining <= 0) {
+            countdownElement.style.display = "none";
+            endedElement.style.display = "block";
+
+            // Move the event to past events section
+            if (eventCard && pastEventsContainer) {
+              pastEventsContainer.appendChild(eventCard);
+            }
+            return;
+          }
+
+          const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+          daysElement.innerHTML = days + "D ";
+          hoursElement.innerHTML = hours + "H ";
+          minutesElement.innerHTML = minutes + "M ";
+          secondsElement.innerHTML = seconds + "S ";
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+      }
+
+      startCountdown(
+        "<%= event.id %>",
+        "<%= new Date(event.event_date).toLocaleDateString('en-GB') %>",
+        "<%= event.closing_time %>"
+      );
+    </script>
+    
     <% }) %>
     
     <div class="fixed-event-card">
