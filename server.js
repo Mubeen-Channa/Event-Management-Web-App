@@ -105,6 +105,29 @@ app.get("/scottish-event", (req, res) => {
 });
 
 
+// Dashboard Route
+app.get("/dashboard", (req, res) => {
+
+  if (!req.session) {
+    return res.send("Access Denied! Session not initialized.");
+  }
+
+  const query = `
+    SELECT 
+      (SELECT COUNT(*) FROM events WHERE status = 'upcoming') AS upcoming_events,
+      (SELECT COUNT(*) FROM events WHERE status = 'past') AS past_events;
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+
+    const { upcoming_events, past_events } = results[0];
+
+    res.render("dashboard", { upcoming_events, past_events, session: req.session });
+  });
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
