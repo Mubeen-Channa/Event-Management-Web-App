@@ -128,6 +128,27 @@ app.get("/dashboard", (req, res) => {
 });
 
 
+// Saved Events
+app.get("/events/saved", requireAdmin, (req, res) => {
+  try {
+    let query = `SELECT @seq := @seq + 1 AS seq_no, e.*  
+             FROM (SELECT * FROM events WHERE status = 'upcoming') AS e,  
+             (SELECT @seq := 0) AS seq_table  
+             ORDER BY e.id;`;
+
+    connection.query(query, (err, events) => {
+      if (err) {
+        throw err;
+      } else {
+        res.render("events_saved", { events });
+      }
+    });
+  } catch (error) {
+    res.send(`Error: ${error}`);
+  }
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
