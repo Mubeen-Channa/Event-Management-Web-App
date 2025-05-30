@@ -227,6 +227,34 @@ app.patch("/events/:id", (req, res) => {
 });
 
 
+// Delete Event
+app.delete("/events/:id", requireAdmin, (req, res) => {
+  let { id } = req.params;
+  let query = `select * from events where id = '${id}'`;
+
+  connection.query(query, (err, result) => {
+      let db_id   = result[0]["id"];
+
+      if (id != db_id) {
+          res.send("ID is Wrong!");
+        } else {
+            let del_query = `Delete from events where id = '${db_id}'`;
+            try {
+                connection.query(del_query, (err, result) => {
+                    if (err) {
+                        res.send("Error: " + err);
+                    } else {
+                        res.redirect("/events/saved");
+                    }
+                });
+            } catch (err) {
+                res.send("Error: " + err);
+            }
+        }
+    })
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
