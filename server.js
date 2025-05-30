@@ -28,6 +28,16 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
 
+// Configure express-session middleware for session management
+app.use(
+  session({
+    secret: "admin",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+
 // MySql Connection
 const connection = mysql.createConnection({
   host: "localhost",
