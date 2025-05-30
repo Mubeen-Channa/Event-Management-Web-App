@@ -213,6 +213,20 @@ app.get("/events/:id/edit", (req, res) => {
 });
 
 
+// Update Event 
+app.patch("/events/:id", (req, res) => {
+  let { title, eventDate, openingTime, closingTime } = req.body;
+  let query = `UPDATE events SET title = ?, event_date = ?, opening_time = ?, closing_time = ? WHERE id = ?`;
+
+  connection.query(query, [title, eventDate, openingTime, closingTime, req.params.id], (err, result) => {
+    if (err) {
+      return res.status(500).send("Database Error: " + err);
+    }
+    res.redirect("/events/saved");
+  });
+});
+
+
 // Server
 app.listen(port, () => {
   console.log(`Server: http://localhost:3000/`);
