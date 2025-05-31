@@ -75,6 +75,17 @@ app.post("/login", (req, res) => {
 });
 
 
+// Logout
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.send("Error logging out.");
+    }
+    res.redirect("/admin"); 
+  });
+});
+
+
 // Home Route
 app.get("/", (req, res) => {
   res.redirect("/events");
