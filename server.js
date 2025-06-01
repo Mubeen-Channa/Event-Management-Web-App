@@ -47,6 +47,15 @@ const connection = mysql.createConnection({
 });
 
 
+// Restrict access to admin-only routes
+function requireAdmin(req, res, next) {
+  if (!req.session || req.session.role !== "admin") {
+    return res.send("Access Denied! Session not initialized.");
+  }
+  next();
+}
+
+
 // Admin Route
 app.get("/admin", (req, res) => {
   res.render("login");
