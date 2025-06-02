@@ -28,6 +28,20 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
 
+// Update Upcoming Events into Past 
+setInterval(() => {
+  connection.query(
+    `UPDATE events 
+     SET status = 'past' 
+     WHERE (event_date < CURDATE()) 
+        OR (event_date = CURDATE() AND closing_time < CURTIME());`, 
+    (error) => {
+      if (error) console.error(error);
+    }
+  );
+}, 2000); // Runs every 2 seconds
+
+
 // Configure express-session middleware for session management
 app.use(
   session({
