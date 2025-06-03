@@ -150,7 +150,7 @@ app.get("/scottish-event", (req, res) => {
 
 
 // Dashboard Route
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", requireAdmin, (req, res) => {
 
   if (!req.session) {
     return res.send("Access Denied! Session not initialized.");
@@ -173,7 +173,7 @@ app.get("/dashboard", (req, res) => {
 
 
 // Saved Events
-app.get("/events/saved", (req, res) => {
+app.get("/events/saved", requireAdmin, (req, res) => {
   try {
     let query = `SELECT @seq := @seq + 1 AS seq_no, e.*  
              FROM (SELECT * FROM events WHERE status = 'upcoming') AS e,  
@@ -194,7 +194,7 @@ app.get("/events/saved", (req, res) => {
 
 
 // Past Events
-app.get("/events/past", (req, res) => {
+app.get("/events/past", requireAdmin, (req, res) => {
   try {
     let query = `SELECT @seq := @seq + 1 AS seq_no, e.*  
              FROM (SELECT * FROM events WHERE status = 'past') AS e,  
@@ -215,14 +215,14 @@ app.get("/events/past", (req, res) => {
 
 
 // Route to Event Form
-app.get("/events/new", (req, res) => {
+app.get("/events/new", requireAdmin, (req, res) => {
   res.render("new_event");
 });
 
 
 
 // Event Form Handling 
-app.post("/events/create", (req, res) => {
+app.post("/events/create", requireAdmin, (req, res) => {
   const { eventTitle, eventDate, openingTime, closingTime, websiteUrl, facebookUrl } = req.body;
 
   const query = `INSERT INTO events (title, event_date, opening_time, closing_time, website_url, facebook_url) 
@@ -243,7 +243,7 @@ app.get("/settings", requireAdmin, (req, res) => res.render("settings"));
 
 
 // Edit Event
-app.get("/events/:id/edit", (req, res) => {
+app.get("/events/:id/edit", requireAdmin, (req, res) => {
   let query = `SELECT * FROM events WHERE id = ?`;
   connection.query(query, [req.params.id], (err, results) => {
     if (err) {
@@ -258,7 +258,7 @@ app.get("/events/:id/edit", (req, res) => {
 
 
 // Update Event 
-app.patch("/events/:id", (req, res) => {
+app.patch("/events/:id", requireAdmin, (req, res) => {
   let { title, eventDate, openingTime, closingTime } = req.body;
   let query = `UPDATE events SET title = ?, event_date = ?, opening_time = ?, closing_time = ? WHERE id = ?`;
 
