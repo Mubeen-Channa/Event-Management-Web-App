@@ -1,6 +1,6 @@
 # 🗓️ Event Management System
 
-A full-featured web application for managing and displaying upcoming and past events. Built using **Node.js**, **Express**, **EJS**, **MySQL**, & **Bootstrap**.
+A full-featured web application for managing and displaying upcoming and past events. Built using **Node.js**, **Express**, **EJS**, **MySQL**, and **Bootstrap**.
 
 <br>
 
